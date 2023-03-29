@@ -47,8 +47,10 @@ func pruneCmd() *cobra.Command {
 			if tendermint {
 				errs.Go(func() error {
 					if err = pruneTMData(args[0]); err != nil {
+						fmt.Println(err)
 						return err
 					}
+					fmt.Println("pruning done")
 					return nil
 				})
 			}
@@ -56,8 +58,10 @@ func pruneCmd() *cobra.Command {
 			if cosmosSdk {
 				err = pruneAppState(args[0])
 				if err != nil {
+					fmt.Println(err)
 					return err
 				}
+				fmt.Println("pruning done")
 				return nil
 
 			}
@@ -704,8 +708,6 @@ func pruneTMData(home string) error {
 	if err := stateDB.ForceCompact(nil, nil); err != nil {
 		return err
 	}
-
-	fmt.Println("pruning done")
 
 	return nil
 }
